@@ -4,8 +4,9 @@ void main() {
   runApp(MyApp());
 }
 
-// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,14 +16,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ignore: use_key_in_widget_constructors
 class ColorChangerScreen extends StatefulWidget {
+  const ColorChangerScreen({super.key});
+
   @override
-  // ignore: library_private_types_in_public_api
-  _ColorChangerScreenState createState() => _ColorChangerScreenState();
+  ColorChangerScreenState createState() => ColorChangerScreenState();
 }
 
-class _ColorChangerScreenState extends State<ColorChangerScreen> {
+class ColorChangerScreenState extends State<ColorChangerScreen> {
   Color _backgroundColor = Colors.grey[300]!;
   final TextEditingController _controller = TextEditingController();
   String? _funFact;
