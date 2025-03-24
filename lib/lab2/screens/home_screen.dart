@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/profile_screen.dart';
+import '../screens/profile_screen.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/device_card.dart';
 
