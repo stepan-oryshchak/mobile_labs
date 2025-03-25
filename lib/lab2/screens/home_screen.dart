@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/profile_screen.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/device_card.dart';
+import 'package:mobile_first_lab/lab2/screens/profile_screen.dart';
+import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
+import 'package:mobile_first_lab/lab2/widgets/device_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
