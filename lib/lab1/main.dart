@@ -81,13 +81,35 @@ class ColorChangerScreenState extends State<ColorChangerScreen> {
               ),
               onSubmitted: (value) => _updateBackgroundColor(),
             ),
+            SizedBox(height: 10),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'data',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
             SizedBox(height: 20),
             ElevatedButton(onPressed: _showFunFact, child: Text("Цікавинка")),
             if (_funFact != null) ...[
               SizedBox(height: 10),
               Text(
                 _funFact!,
-                style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
