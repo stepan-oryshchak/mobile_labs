@@ -1,78 +1,50 @@
 import 'package:flutter/material.dart';
-import '../repository/user_repository_impl.dart';
-import 'home_screen.dart';
-import 'registration_screen.dart';
+import 'package:mobile_first_lab/lab3/screens/home_screen.dart';
+import 'package:mobile_first_lab/lab2/widgets/input_field.dart';
+import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
+import '../models/user_model.dart'; // Імпортуємо модель User
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final repo = UserRepositoryImpl();
-  final formKey = GlobalKey<FormState>();
-
-  void login() async {
-    if (formKey.currentState!.validate()) {
-      final user = await repo.loginUser(
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
-
-      if (user != null) {
-        Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(builder: (_) => HomeScreen(user: user)),
-        );
-      } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid credentials')),
-        );
-      }
-    }
-  }
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) => value != null && value.contains('@')
-                    ? null
-                    : 'Invalid email',
-              ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: (value) =>
-                    value != null && value.length >= 6 ? null : 'Min 6 chars',
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(onPressed: login, child: const Text('Login')),
-              TextButton(
-                onPressed: () => Navigator.push(
+        child: Column(
+          children: [
+            InputField(hint: 'Email', controller: emailController),
+            SizedBox(height: 16),
+            InputField(
+                hint: 'Password',
+                obscure: true,
+                controller: passwordController),
+            SizedBox(height: 32),
+            CustomButton(
+              text: 'Login',
+              onPressed: () {
+                // Створюємо об'єкт користувача з даними, введеними в текстові поля
+                final user = User(
+                  name: 'User Name', // Замініть на відповідне значення
+                  email: emailController.text,
+                  password: passwordController.text,
+                );
+
+                // Переходимо до HomeScreen після успішного логіну
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const RegistrationScreen()),
-                ),
-                child: const Text('Register'),
-              ),
-            ],
-          ),
+                  MaterialPageRoute(
+                    builder: (_) => HomeScreen(user: user),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

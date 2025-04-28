@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     await repo.updateUser(updatedUser);
-    // ignore: use_build_context_synchronously
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile updated')),
     );
@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void deleteAccount() async {
     await repo.deleteUser();
-    // ignore: use_build_context_synchronously
+    if (!mounted) return;
     Navigator.popUntil(context, (route) => route.isFirst);
   }
 

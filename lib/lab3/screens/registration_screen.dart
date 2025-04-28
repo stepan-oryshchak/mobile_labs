@@ -1,77 +1,62 @@
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
-import '../repository/user_repository_impl.dart';
-import 'login_screen.dart';
+import 'package:mobile_first_lab/lab2/widgets/input_field.dart';
+import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
+import 'package:mobile_first_lab/lab3/models/user_model.dart';
+import 'package:mobile_first_lab/lab3/screens/login_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  RegistrationScreenState createState() => RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-  final repo = UserRepositoryImpl();
+class RegistrationScreenState extends State<RegistrationScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  void register() async {
-    if (formKey.currentState!.validate()) {
-      final user = User(
-        name: nameController.text.trim(),
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  void _register() {
+    final user = User(
+      name: nameController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+    // Логіка реєстрації (можна зберігати дані користувача)
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('User ${user.name} registered successfully!'),
+      backgroundColor: Colors.green,
+    ));
 
-      await repo.registerUser(user);
-
-      Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    }
+    // Переходимо на сторінку логіну після реєстрації
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(title: Text('Registration')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) =>
-                    value != null && RegExp(r'^[A-Za-z ]+$').hasMatch(value)
-                        ? null
-                        : 'Only letters allowed',
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) => value != null && value.contains('@')
-                    ? null
-                    : 'Invalid email',
-              ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: (value) =>
-                    value != null && value.length >= 6 ? null : 'Min 6 chars',
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: register, child: const Text('Register')),
-            ],
-          ),
+        child: Column(
+          children: [
+            InputField(hint: 'Name', controller: nameController),
+            SizedBox(height: 16),
+            InputField(hint: 'Email', controller: emailController),
+            SizedBox(height: 16),
+            InputField(
+                hint: 'Password',
+                obscure: true,
+                controller: passwordController),
+            SizedBox(height: 32),
+            CustomButton(
+              text: 'Register',
+              onPressed: _register,
+            ),
+          ],
         ),
       ),
     );
