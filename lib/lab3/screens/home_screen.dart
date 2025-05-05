@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mobile_first_lab/lab2/widgets/device_card.dart';
 import 'package:mobile_first_lab/lab3/models/user_model.dart';
 import 'package:mobile_first_lab/lab3/screens/profile_screen.dart';
 import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
-import 'package:mobile_first_lab/lab2/widgets/device_card.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
@@ -21,8 +22,29 @@ class HomeScreenState extends State<HomeScreen> {
     'Камера': (Icons.videocam, false),
   };
 
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 10), (_) {
+      setState(() {
+        _devices.updateAll((key, value) => (value.$1, !value.$2));
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   void _toggleDevice(String name) {
-    setState(() => _devices[name] = (_devices[name]!.$1, !_devices[name]!.$2));
+    setState(() {
+      _devices[name] = (_devices[name]!.$1, !_devices[name]!.$2);
+    });
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('$name ${_devices[name]!.$2 ? "увімкнено" : "вимкнено"}'),
       backgroundColor: _devices[name]!.$2 ? Colors.green : Colors.red,

@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RegistrationScreen(), // Початкова сторінка — реєстрація
+      home: RegistrationScreen(),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 import '../repository/user_repository_impl.dart';
+import 'package:mobile_first_lab/lab3/screens/registration_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
@@ -60,7 +62,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 20),
             ElevatedButton(onPressed: saveChanges, child: const Text('Save')),
             ElevatedButton(
-                onPressed: deleteAccount, child: const Text('Delete Account')),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('user');
+
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegistrationScreen()),
+                    (route) => false,
+                  );
+                }
+              },
+              child: const Text('Вийти з акаунту'),
+            ),
           ],
         ),
       ),

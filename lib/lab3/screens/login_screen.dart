@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_first_lab/lab3/screens/home_screen.dart';
 import 'package:mobile_first_lab/lab2/widgets/input_field.dart';
 import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
-import '../models/user_model.dart'; // Імпортуємо модель User
+import '../models/user_model.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -28,14 +28,12 @@ class LoginScreen extends StatelessWidget {
             CustomButton(
               text: 'Login',
               onPressed: () {
-                // Створюємо об'єкт користувача з даними, введеними в текстові поля
                 final user = User(
-                  name: 'User Name', // Замініть на відповідне значення
+                  name: 'Stepan',
                   email: emailController.text,
                   password: passwordController.text,
                 );
 
-                // Переходимо до HomeScreen після успішного логіну
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
