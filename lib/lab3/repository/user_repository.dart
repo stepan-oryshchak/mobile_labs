@@ -1,4 +1,4 @@
-import '../models/user_model.dart';
+import 'package:mobile_first_lab/lab3/models/user_model.dart';
 
 abstract class UserRepository {
   Future<void> registerUser(User user);
