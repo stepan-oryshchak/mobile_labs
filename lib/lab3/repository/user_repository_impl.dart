@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:mobile_first_lab/lab3/models/user_model.dart';
+import 'package:mobile_first_lab/lab3/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user_model.dart';
-import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   static const String userKey = 'user_data';

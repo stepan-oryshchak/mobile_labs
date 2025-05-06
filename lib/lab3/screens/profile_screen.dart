@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_first_lab/lab3/models/user_model.dart';
+import 'package:mobile_first_lab/lab3/repository/user_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user_model.dart';
-import '../repository/user_repository_impl.dart';
 import 'package:mobile_first_lab/lab3/screens/registration_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
