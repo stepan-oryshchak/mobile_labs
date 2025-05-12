@@ -38,6 +38,7 @@ dependencies:
   mqtt_client: ^10.0.0
   connectivity_plus: ^5.0.2
   logger: ^2.0.2
+  logging: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+import 'dart:isolate';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:mobile_first_lab/lab3/models/user_model.dart';
 import 'package:mobile_first_lab/lab3/repository/user_repository_impl.dart';
@@ -18,11 +20,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController emailController;
   final repo = UserRepositoryImpl();
 
+  late Isolate _isolate;
+  late SendPort _sendPort;
+  final ReceivePort _receivePort = ReceivePort();
+
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.user.name);
     emailController = TextEditingController(text: widget.user.email);
+    _initIsolate();
+  }
+
+  Future<void> _initIsolate() async {
+    final isolate = await Isolate.spawn(_isolateEntry, _receivePort.sendPort);
+    _isolate = isolate;
+
+    _sendPort = await _receivePort.first as SendPort;
+  }
+
+  static void _isolateEntry(SendPort mainSendPort) {
+    final port = ReceivePort();
+    mainSendPort.send(port.sendPort);
+
+    port.listen((message) {
+      if (message == 'SAVE_USER') {
+        print('✅ Дані юзера збережено');
+        log('✅ Дані юзера збережено', name: 'ProfileIsolate');
+      }
+    });
   }
 
   void saveChanges() async {
@@ -33,6 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     await repo.updateUser(updatedUser);
+
+    _sendPort.send('SAVE_USER');
+
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile updated')),
@@ -43,6 +72,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await repo.deleteUser();
     if (!mounted) return;
     Navigator.popUntil(context, (route) => route.isFirst);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    _receivePort.close();
+    _isolate.kill(priority: Isolate.immediate);
+    super.dispose();
   }
 
   @override

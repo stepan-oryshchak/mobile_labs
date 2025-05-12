@@ -29,7 +29,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
     await prefs.setString('email', user.email);
     await prefs.setString('password', user.password);
 
-    if (!mounted) return; // Перевірка на "mounted"
+    if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('User ${user.name} registered successfully!'),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_first_lab/lab2/widgets/device_card.dart';
 import 'package:mobile_first_lab/lab3/models/user_model.dart';
-import 'package:mobile_first_lab/lab3/screens/login_screen.dart';
 import 'package:mobile_first_lab/lab3/screens/profile_screen.dart';
 import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
+import 'package:mobile_first_lab/lab3/screens/registration_screen.dart';
 import 'package:mobile_first_lab/lab3/services/mqtt_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,11 +36,10 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _mqttService.connect(); // Підключаємо MQTT
+    _mqttService.connect();
     _mqttService.listenToMessages((newDeviceStates) {
-      if (!mounted) return; // Перевірка на "mounted"
+      if (!mounted) return;
       setState(() {
-        // Оновлюємо стан пристроїв згідно з отриманими даними
         _devices.updateAll((key, value) =>
             Device(icon: value.icon, isOn: newDeviceStates[key] ?? value.isOn));
       });
@@ -49,8 +48,8 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _mqttService.disconnect(); // Відключаємося від MQTT
     super.dispose();
+    _mqttService.disconnect();
   }
 
   void _toggleDevice(String name) {
@@ -74,7 +73,7 @@ class HomeScreenState extends State<HomeScreen> {
     if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
+        MaterialPageRoute(builder: (_) => RegistrationScreen()),
       );
     }
   }

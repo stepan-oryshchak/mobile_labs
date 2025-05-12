@@ -4,7 +4,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MqttService {
-  final String _broker = 'test.mosquitto.org';
+  final String _broker = 'broker.hivemq.com';
   final int _port = 1883;
   final String _topic = 'devices/control';
   final String _clientId =
