@@ -45,7 +45,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     port.listen((message) {
       if (message == 'SAVE_USER') {
-        print('✅ Дані юзера збережено');
         log('✅ Дані юзера збережено', name: 'ProfileIsolate');
       }
     });
