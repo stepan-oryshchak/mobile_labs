@@ -3,6 +3,7 @@ import 'package:mobile_first_lab/lab2/widgets/input_field.dart';
 import 'package:mobile_first_lab/lab2/widgets/custom_button.dart';
 import 'package:mobile_first_lab/lab3/models/user_model.dart';
 import 'package:mobile_first_lab/lab3/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -16,19 +17,25 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void _register() {
+  Future<void> _register() async {
     final user = User(
       name: nameController.text.trim(),
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
-    // Логіка реєстрації (можна зберігати дані користувача)
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', user.name);
+    await prefs.setString('email', user.email);
+    await prefs.setString('password', user.password);
+
+    if (!mounted) return;
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('User ${user.name} registered successfully!'),
       backgroundColor: Colors.green,
     ));
 
-    // Переходимо на сторінку логіну після реєстрації
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => LoginScreen()),
